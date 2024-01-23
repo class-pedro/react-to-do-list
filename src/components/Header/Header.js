@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { FaListUl } from 'react-icons/fa'
-import HeaderImg from '../../assets/header-img.jpg'
+import { FaListUl } from 'react-icons/fa';
+import HeaderImg from '../../assets/header-img.jpg';
 
 const HeaderContainer = styled.header`
     background: url(${HeaderImg}) no-repeat center center;
@@ -8,14 +8,14 @@ const HeaderContainer = styled.header`
     height: 250px;
     display: flex;
     justify-content: center;
-`
+`;
 
 const TextHeaderContainer = styled.div`
     width: 60%;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    color: red;
+    color: white;
     font-size: 2em;
     font-weight: 700;
     text-transform: uppercase;
@@ -25,7 +25,16 @@ const TextHeaderContainer = styled.div`
     h1 {
         margin-bottom: 55px;
     }
-`
+
+    @media (max-width: 450px) {
+        font-size: 1.25em;
+
+        h1 {
+            margin-bottom: 30px;
+        }
+    }
+
+`;
 
 function Header() {
     return (

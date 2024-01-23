@@ -4,7 +4,7 @@ import { FaPlus } from "react-icons/fa6";
 import { useState } from "react";
 import { uniqueId } from "lodash";
 
-
+// ############################# Styled Components #############################
 //Create Task Configs
 const CreateTaskContainer = styled.div`
     background-color: #373737;
@@ -38,6 +38,10 @@ const InputTask = styled.input`
 
     &:focus {
         border: 1px solid #0090ff;
+    }
+
+    @media (max-width: 450px) {
+        font-size: 1.25em;
     }
 `;
 
@@ -84,15 +88,31 @@ const TaskItem = styled.li`
 `;
 
 const TaskName = styled.span`
+@keyframes lineThroughAnimation {
+    0% {
+      text-decoration: none;
+    }
+    
+    100% {
+      text-decoration: line-through;
+    }
+  }
+
     border: 0 solid grey;
     width: 100%;
     height: 40px;
     font-size: 1.5em;
-    color: ${props => props.cor};
+    color: ${props => props.color};
     text-decoration: ${props => props.decoration};
+    animation: ${props => props.animation};
     overflow: hidden;
     white-space: nowrap;
     margin: 5px 5px 0 15px;
+
+    @media (max-width: 450px) {
+        font-size: 1.25em;
+        margin: 10px 5px 0 15px;
+    }
 `;
 
 const CheckboxContainer = styled.label`
@@ -191,30 +211,32 @@ const ListContainer = styled.ul`
     flex-direction: column;
     gap: 15px;
 `;
+// ############################# Styled Components #############################
 
 function TaskContainer() {
 
     const [createTask, setCreateTask] = useState('');
     const [tasks, setTasks] = useState([]);
     const gerId = uniqueId();
-    const [complete, setComplete] = useState(false);
 
     function handleCreateTask() {
+
         if (createTask === '' || createTask.length <= 0) {
             alert('Digite uma tarefa!');
 
         } else {
+
             const newTask = { title: createTask, id: gerId, isCompleate: false };
             setTasks([...tasks, newTask]);
-            console.table(tasks);
             setCreateTask("");
+
         }
     }
 
     function handleToggleComplete(id) {
         const taskComplete = tasks.map(task => {
-            if (task.id ===id) {
-                return {...task, isCompleate: !task.isCompleate};
+            if (task.id === id) {
+                return { ...task, isCompleate: !task.isCompleate };
             }
 
             return task;
@@ -233,6 +255,7 @@ function TaskContainer() {
             <CreateTaskContainer>
 
                 <InputTask
+                    id="taskName"
                     type="text"
                     placeholder="Create your task"
                     value={createTask}
@@ -241,7 +264,9 @@ function TaskContainer() {
                     }}
                 />
 
-                <BtnCreateTask onClick={handleCreateTask}>
+                <BtnCreateTask
+                    onClick={handleCreateTask}
+                >
                     <FaPlus />
                 </BtnCreateTask>
 
@@ -250,7 +275,10 @@ function TaskContainer() {
             {/* Task Container */}
             <ListContainer>
                 {tasks.map(task =>
-                    <TaskItem key={task.id} borderColor={task.isCompleate ? '#0090ff' : '#434343'}>
+                    <TaskItem
+                        key={task.id}
+                        borderColor={task.isCompleate ? '#0090ff' : '#434343'}
+                    >
                         <NameAndCheckContainer>
                             <CheckboxContainer>
                                 <Checkbox
@@ -259,12 +287,18 @@ function TaskContainer() {
                                 />
                                 <Checkmark />
                             </CheckboxContainer>
-                            <TaskName cor={task.isCompleate ? '#6F6F6F' : 'white'} decoration={task.isCompleate ? 'line-through' : 'none'}>
+                            <TaskName
+                                color={task.isCompleate ? '#6F6F6F' : 'white'}
+                                decoration={task.isCompleate ? 'line-through' : 'none'}
+                                animation={task.isCompleate ? 'lineThroughAnimation .7s' : 'none'}
+                            >
                                 {task.title}
                             </TaskName>
                         </NameAndCheckContainer>
 
-                        <DeleteTaskBtn onClick={() => handleDeleteTask(task.id)}>
+                        <DeleteTaskBtn
+                            onClick={() => handleDeleteTask(task.id)}
+                        >
                             <FaTrash />
                         </DeleteTaskBtn>
                     </TaskItem>)}
