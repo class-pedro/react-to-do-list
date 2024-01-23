@@ -15,7 +15,7 @@ const TextHeaderContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    color: white;
+    color: red;
     font-size: 2em;
     font-weight: 700;
     text-transform: uppercase;
