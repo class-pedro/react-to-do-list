@@ -71,7 +71,6 @@ const NameAndCheckContainer = styled.div`
 `;
 
 const TaskItem = styled.li`
-    /*Cor da borda para tarefa concluída: #3dee4b*/
     width: 60%;
     border: 1px solid ${props => props.borderColor};
     padding: 0 10px;
@@ -84,10 +83,6 @@ const TaskItem = styled.li`
     align-items: center;
 `;
 
-/*
-    cor para task completa: #6F6F6F;
-    decoração para task completa: line-through;
-*/
 const TaskName = styled.span`
     border: 0 solid grey;
     width: 100%;
