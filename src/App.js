@@ -9,13 +9,14 @@ const AppContainer = styled.div`
 `
 
 function App() {
-  
+
   return (
     <AppContainer>
       <Header />
       <TaskContainer />
     </AppContainer>
   );
+  
 }
 
 export default App;
