@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { FaTrash } from "react-icons/fa6";
 import { FaPlus } from "react-icons/fa6";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { uniqueId } from "lodash";
 
 // ############################# Styled Components #############################
@@ -88,31 +88,31 @@ const TaskItem = styled.li`
 `;
 
 const TaskName = styled.span`
-@keyframes lineThroughAnimation {
-    0% {
-      text-decoration: none;
+    @keyframes lineThroughAnimation {
+        0% {
+        text-decoration: none;
+        }
+        
+        100% {
+        text-decoration: line-through;
+        }
     }
-    
-    100% {
-      text-decoration: line-through;
-    }
-  }
 
-    border: 0 solid grey;
-    width: 100%;
-    height: 40px;
-    font-size: 1.5em;
-    color: ${props => props.color};
-    text-decoration: ${props => props.decoration};
-    animation: ${props => props.animation};
-    overflow: hidden;
-    white-space: nowrap;
-    margin: 5px 5px 0 15px;
+        border: 0 solid grey;
+        width: 100%;
+        height: 40px;
+        font-size: 1.5em;
+        color: ${props => props.color};
+        text-decoration: ${props => props.decoration};
+        animation: ${props => props.animation};
+        overflow: hidden;
+        white-space: nowrap;
+        margin: 5px 5px 0 15px;
 
-    @media (max-width: 450px) {
-        font-size: 1.25em;
-        margin: 10px 5px 0 15px;
-    }
+        @media (max-width: 450px) {
+            font-size: 1.25em;
+            margin: 10px 5px 0 15px;
+        }
 `;
 
 const CheckboxContainer = styled.label`
@@ -123,18 +123,14 @@ const CheckboxContainer = styled.label`
     cursor: pointer;
     
     // Condicional para o funcionamento do Checkbox
-    input:checked ~ span {
-        background-color: #0090ff;
+    span {
+        background-color: ${(props) => (props.isCompleted ? '#0090ff' : 'transparent')}
     }
     
     span:after {
         content: '';
         position: absolute;
-        display: none;
-    }
-    
-    input:checked ~ span:after {
-        display: block;
+        display: ${(props) => (props.isCompleted ? 'block' : 'none')};
     }
 `;
 
@@ -216,7 +212,12 @@ const ListContainer = styled.ul`
 function TaskContainer() {
 
     const [createTask, setCreateTask] = useState('');
-    const [tasks, setTasks] = useState([]);
+    const [tasks, setTasks] = useState(() => {
+        const savedTasks = localStorage.getItem('characters');
+
+        return savedTasks ? JSON.parse(savedTasks) : [];
+    });
+
     const gerId = uniqueId();
 
     function handleCreateTask() {
@@ -249,6 +250,10 @@ function TaskContainer() {
         setTasks(tasks.filter(task => task.id !== id));
     }
 
+    useEffect(() => {
+        localStorage.setItem('characters', JSON.stringify(tasks));
+    }, [tasks])
+
     return (
         <>
             {/* Create Task */}
@@ -276,11 +281,13 @@ function TaskContainer() {
             <ListContainer>
                 {tasks.map(task =>
                     <TaskItem
-                        key={task.id}
+                        key={+ task.id * Math.random()}
                         borderColor={task.isCompleate ? '#0090ff' : '#434343'}
                     >
                         <NameAndCheckContainer>
-                            <CheckboxContainer>
+                            <CheckboxContainer
+                                isCompleted={task.isCompleate}
+                            >
                                 <Checkbox
                                     type='checkbox'
                                     onClick={() => handleToggleComplete(task.id)}
