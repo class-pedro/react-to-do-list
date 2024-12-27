@@ -8,7 +8,8 @@ import { uniqueId } from "lodash";
 //Create Task Configs
 const CreateTaskContainer = styled.div`
     background-color: #373737;
-    width: 60%;
+    width: 90%;
+    max-width: 1030px;
     height: 60px;
     display: flex;
     justify-content: space-between;
@@ -75,7 +76,8 @@ const NameAndCheckContainer = styled.div`
 `;
 
 const TaskItem = styled.li`
-    width: 60%;
+    width: 90%;
+    max-width: 1030px;
     border: 1px solid ${props => props.borderColor};
     padding: 0 10px;
     background-color: #373737;
